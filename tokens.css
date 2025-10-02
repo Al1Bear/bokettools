@@ -1,0 +1,162 @@
+@charset "utf-8";
+/* ===============================
+   ROOT SYSTEM – GLOBAL TOKENS
+   =============================== */
+
+:root {
+  /* HEADER */
+  --header-height: clamp(52px, 7vh, 80px);
+  --header-bg: var(--surface);
+  --header-text: var(--ink);
+  --header-border: var(--border);
+  --header-shadow: 0 2px 6px rgba(0,0,0,0.3);
+
+  /* FOOTER */
+  --footer-bg: var(--surface-alt);
+  --footer-text: var(--muted);
+  --footer-border: var(--border);
+  --footer-shadow: 0 -2px 6px rgba(0,0,0,0.3);
+	
+  /* --- COLORS --- */
+  --bg: #0b0e11;                /* background */
+  --surface: #151a1f;           /* raised surface */
+  --surface-alt: #1d242b;       /* alternative surface (cards, modals) */
+  --ink: #eafaff;               /* primary text */
+  --muted: #9fb3c7;             /* secondary text */
+  --accent: #6ff2f7;            /* cyan highlight */
+  --accent-soft: #9feeee;       /* softer cyan highlight */
+  --success: #6ff796;           /* positive / success */
+  --warning: #f7d66f;           /* warning / caution */
+  --danger: #ff8888;            /* error / destructive */
+  --info: #9fdce2;              /* info / secondary */
+  --border: rgba(111,242,247,.3); /* subtle border tint */
+  --overlay-bg: rgba(0,0,0,.55);  /* modal overlay */
+  --backdrop: rgba(0,0,0,.75);    /* stronger overlay */
+
+  /* --- Extended Palette (extra accents, not duplicates) --- */
+  --accent-light: #9ff9fb;      /* lighter cyan */
+  --accent-deep: #53b6bc;       /* deep teal */
+  --warning-soft: #e5c079;      /* softer gold */
+  --success-soft: #7fd89a;      /* softer green */
+  --error-soft: #e57c79;        /* softer red */
+  --info-soft: #7fa8df;         /* softer blue */
+  --mystical: #b799ff;          /* violet dreamy */
+	
+  /* --- TYPOGRAPHY --- */
+  --font-body: "Georgia", serif;
+  --font-heading: "Cinzel Decorative", serif;
+  --font-mono: "Fira Code", monospace;
+
+/* --- FONT SCALE (fluid, compact for text-heavy layouts) --- */
+--font-xxs: clamp(0.45rem, 0.8vw, 0.65rem);   /* micro text */
+--font-xs:  clamp(0.55rem, 1vw, 0.75rem);     /* very small text */
+--font-sm:  clamp(0.65rem, 1.1vw, 0.9rem);    /* small body / notes */
+--font-md:  clamp(0.8rem, 1.4vw, 1rem);       /* default body */
+--font-lg:  clamp(1rem, 1.8vw, 1.25rem);      /* lead text */
+--font-xl:  clamp(1.2rem, 2.5vw, 1.5rem);     /* headings */
+--font-xxl: clamp(1.5rem, 4vw, 2rem);         /* large headings */
+
+  --line-base: 1.6;
+  --line-heading: 1.2;
+  --letter-tight: -0.02em;
+  --letter-wide: 0.05em;
+	
+/* --- LETTER SPACING --- */
+--letter-tight: -0.02em;
+--letter-normal: 0;
+--letter-wide: 0.03em;
+--letter-wider: 0.06em;
+--letter-loose: 0.1em;   /* new, for big mystical/hero text */
+	
+  /* --- SPACING SCALE --- */
+  --pad-xxs: clamp(1px, 0.4vh, 4px);
+  --pad-xs: clamp(2px, 0.35vw, 6px);
+  --pad-sm: clamp(4px, 0.8vw, 8px);
+  --pad-md: clamp(8px, 1vw, 16px);
+  --pad-lg: clamp(12px, 1.8vw, 24px);
+  --pad-xl: clamp(18px, 2.6vw, 32px);
+
+  --gap-xs: clamp(2px, 0.6vw, 6px);
+  --gap-sm: clamp(4px, 0.8vw, 12px);
+  --gap-md: clamp(8px, 1.2vw, 16px);
+  --gap-lg: clamp(12px, 1.8vw, 24px);
+
+  /* Margin-friendly aliases */
+  --space-xs: var(--pad-xs);
+  --space-sm: var(--pad-sm);
+  --space-md: var(--pad-md);
+  --space-lg: var(--pad-lg);
+  --space-xl: var(--pad-xl);
+
+  /* Section rhythm */
+  --section-pad: var(--pad-lg);
+  --section-gap: var(--gap-lg);
+
+  /* --- CONTAINERS --- */
+  --container-narrow: clamp(280px, 85vw, 800px);
+  --container-default: clamp(320px, 90vw, 1200px);
+  --container-wide: clamp(320px, 95vw, 1600px);
+  --container-full: 100%; /* for bleed layouts */
+
+  /* --- SLOTS (cards, hero panels) --- */
+  --slot-min: 50px;
+  --slot-max: 208px;
+  --slot-ideal: 18vw;
+  --slot-size: clamp(var(--slot-min), var(--slot-ideal), var(--slot-max));
+
+  /* --- RADII & SHADOWS --- */
+  --radius-sm: clamp(3px, 0.5vw, 6px);
+  --radius-md: clamp(6px, 1vw, 12px);
+  --radius-lg: clamp(12px, 1.5vw, 18px);
+
+  --shadow-sm: 0 0 clamp(3px, 0.5vw, 6px) rgba(0,0,0,0.3);
+  --shadow-md: 0 0 clamp(6px, 1vw, 12px) rgba(0,0,0,0.4);
+  --shadow-lg: 0 0 clamp(10px, 1.5vw, 20px) rgba(0,0,0,0.5);
+
+  /* --- TRANSITIONS & ANIMATIONS --- */
+  --t-fast: 150ms ease;
+  --t-base: 300ms ease;
+  --t-slow: 500ms ease;
+  --anim-pulse: 2.5s ease-in-out infinite;
+  --anim-fade: 0.3s ease;
+
+  /* --- Z-INDEX LAYERS --- */
+  --z-base: 0;
+  --z-header: 100;
+  --z-modal: 1000;
+  --z-tooltip: 5000;
+
+  /* --- LOGO --- */
+  --logo-xxs: clamp(32px, 5vw, 64px);
+  --logo-xs:  clamp(80px, 12vw, 160px);
+  --logo-sm:  clamp(120px, 18vw, 240px);
+  --logo-md:  clamp(180px, 25vw, 360px);
+  --logo-lg:  clamp(240px, 35vw, 520px);
+  --logo-xl:  clamp(320px, 45vw, 680px);
+  /* --- SHORTCUT ICONS --- */
+  --shortcut-size: clamp(14px, 2.5vh, 22px);
+	
+  --logo-glow: 0 0 10px rgba(180, 220, 255, 0.25),
+               0 0 25px rgba(140, 200, 255, 0.2),
+               0 0 40px rgba(120, 180, 255, 0.15);
+  --logo-glow-hover: 0 0 14px rgba(180, 220, 255, 0.35),
+                     0 0 32px rgba(140, 200, 255, 0.3),
+                     0 0 52px rgba(120, 180, 255, 0.2);
+
+  /* --- BUTTON SLOT 1 --- */
+  --btn-1-bg: linear-gradient(135deg, rgba(76,212,217,0.25), rgba(111,242,247,0.35));
+  --btn-1-bg-hover: linear-gradient(135deg, rgba(76,212,217,0.35), rgba(111,242,247,0.45));
+  --btn-1-text: var(--ink);
+  --btn-1-radius: 9999px;
+  --btn-1-glow: 0 0 10px rgba(111,242,247,0.25), 0 0 20px rgba(76,212,217,0.15);
+  --btn-1-glow-hover: 0 0 12px rgba(111,242,247,0.35), 0 0 28px rgba(76,212,217,0.25);
+  --btn-1-pulse-duration: 4s;
+  --btn-1-pulse-ease: ease-in-out;
+
+  /* --- STARFIELD (landing) --- */
+  --star-density-far: 250;
+  --star-density-near: 120;
+  --star-opacity-min: 0.6;
+  --star-opacity-max: 1;
+}
+

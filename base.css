@@ -1,0 +1,226 @@
+@charset "utf-8";
+
+/* ===============================
+   BASE ELEMENTS
+   =============================== */
+html, body {
+  height: 100%;         /* full viewport */
+  min-height: 100dvh;   /* dynamic viewport height (mobile safe) */
+  margin: 0;            /* reset default margin */
+  padding: 0;           /* reset default padding */
+}
+
+body {
+  display: flex;
+  flex-direction: column;   /* vertical stacking: header, main, footer */
+
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--font-md);
+  line-height: var(--line-base);
+
+  /* Safe-area support for devices with notches (viewport-fit=cover) */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Main content flexes between header & footer */
+main, #site-main {
+  flex: 1 0 auto;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  line-height: var(--line-heading);
+}
+
+/* ===============================
+   HEADER
+   =============================== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  height: var(--header-height);
+
+  background: rgba(11, 14, 17, 0.65);
+  backdrop-filter: blur(8px) saturate(150%);
+  -webkit-backdrop-filter: blur(8px) saturate(150%);
+
+  border-bottom: 1px solid var(--header-border);
+  box-shadow: var(--header-shadow);
+
+  padding: 0 var(--pad-md);
+  box-sizing: border-box;
+
+  position: relative; /* for absolute centering */
+}
+
+/* Left logo block (Boketto) */
+.logo-block.left {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+  position: relative; /* keeps its shortcut panel */
+  justify-self: start;
+}
+
+/* Right logo block (Nexus/Game) */
+.logo-block.right {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+  position: relative; /* keeps its shortcut panel */
+  justify-self: end;
+}
+
+/* Logos scale with header height */
+#boketto-logo img,
+#game-logo img,
+#nexus-logo img {
+  height: calc(var(--header-height) * 0.7);
+  width: auto;
+  display: block;
+  cursor: pointer;
+
+  transition: transform var(--t-base), filter var(--t-base);
+  filter: drop-shadow(var(--logo-glow));
+}
+#boketto-logo:hover img,
+#game-logo:hover img,
+#nexus-logo:hover img {
+  transform: scale(1.05) rotate(-2deg);
+  filter: brightness(1.2) drop-shadow(var(--logo-glow-hover));
+}
+
+/* === ABSOLUTE CENTERING === */
+.header-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: max-content; /* keeps text compact */
+  pointer-events: none; /* so clicks pass through if needed */
+}
+
+/* Main mystical note */
+.construction-note {
+  font-family: var(--font-heading);
+  text-align: center;
+  font-size: var(--font-xs);
+  font-style: italic;
+  color: var(--muted);
+  opacity: 0;
+  letter-spacing: var(--letter-normal);
+  white-space: nowrap;
+  animation: fadeMystical 6s var(--t-slow) infinite;
+}
+.construction-sub {
+  font-family: var(--font-heading);
+  font-size: var(--font-xxs);
+  color: var(--muted);
+  opacity: 0.7;
+  letter-spacing: var(--letter-normal);
+  text-align: center;
+}
+
+/* Shortcut panels (drop under their logo) */
+.shortcut-panel {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-0.3rem);
+  display: flex;
+  gap: var(--gap-sm);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-base), transform var(--t-base);
+  z-index: 200;
+}
+.shortcut-panel.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(var(--pad-xs));
+}
+
+/* Shortcut icons */
+.shortcut-item img {
+  width: var(--shortcut-size);
+  height: auto;
+  filter: drop-shadow(0 0 4px rgba(111,242,247,0.25));
+  transition: filter var(--t-fast), transform var(--t-fast);
+}
+.shortcut-item:hover img {
+  filter: drop-shadow(0 0 6px rgba(111,242,247,0.45));
+  transform: scale(1.1);
+}
+
+/* Side shortcut (Back button inside Boketto block) */
+.shortcut-side {
+  margin-left: auto;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-base), transform var(--t-base);
+}
+.shortcut-side.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0.3rem);
+}
+
+/* Fade through your palette */
+@keyframes fadeMystical {
+  0%   { opacity: 0; color: var(--muted); }
+  25%  { opacity: 1; color: var(--accent); }
+  50%  { opacity: 1; color: var(--mystical); }
+  75%  { opacity: 1; color: var(--warning-soft); }
+  100% { opacity: 0; color: var(--muted); }
+}
+
+/* ===============================
+   FOOTER
+   =============================== */
+#site-footer {
+  width: 100%;
+  margin-top: auto;                /* pushes footer to bottom in flex layout */
+
+  background: var(--footer-bg);
+  color: var(--footer-text);
+  border-top: 1px solid var(--footer-border);
+  box-shadow: var(--footer-shadow);
+
+  padding: var(--pad-xs) 0 var(--pad-sm) 0;  /* uses spacing scale */
+  text-align: center;
+
+  font-family: var(--font-body);
+  font-size: var(--font-sm);
+  font-weight: 500;
+
+  box-sizing: border-box;
+  z-index: var(--z-base);
+}
+
+#site-footer a {
+  color: var(--accent);
+  text-decoration: underline;
+  transition: color var(--t-base);
+}
+
+#site-footer a:hover {
+  color: var(--accent-soft);
+}
