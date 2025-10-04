@@ -1,0 +1,642 @@
+@charset "utf-8";
+
+/* ===============================
+   BASE ELEMENTS (Nebula Theme)
+   =============================== */
+html, body {
+  height: 100%;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--font-md);
+  line-height: var(--line-base);
+
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+main, #site-main {
+  flex: 1 0 auto;
+}
+
+/* ===============================
+   TYPOGRAPHY
+   =============================== */
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  line-height: var(--line-heading);
+  background: linear-gradient(90deg, var(--slate-1), var(--slate-3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 8px var(--accent-soft);
+}
+h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--ink-sub);
+}
+p, li, span {
+  color: var(--ink-soft);
+}
+
+/* ===============================
+   HEADER
+   =============================== */
+.site-header {
+  position: relative;
+  z-index: var(--z-header);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  height: var(--header-height);
+
+  background: none;
+  backdrop-filter: blur(6px) saturate(120%);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+
+  border-bottom: 1px solid var(--footer-border);
+  box-shadow: var(--shadow-md), var(--footer-shadow);
+  padding: 0 var(--pad-md);
+  box-sizing: border-box;
+  overflow: visible; /* allow shortcut panels to drop down */
+}
+.site-header a {
+  background: linear-gradient(90deg, var(--slate-1), var(--slate-3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-decoration: none;
+  transition: -webkit-text-fill-color var(--t-base), text-shadow var(--t-base);
+}
+/* Left logo block (Boketto) */
+.logo-block.left {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+  position: relative;      /* anchor for left shortcuts */
+  justify-self: start;
+  height: 100%;
+}
+
+/* Right logo block (Nexus/Game) */
+.logo-block.right {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+  position: relative;      /* anchor for right shortcuts */
+  justify-self: end;
+  height: 100%;
+}
+
+/* Logos scale with header height */
+#boketto-logo img,
+#game-logo img,
+#nexus-logo img {
+  height: calc(var(--header-height) * 0.7);
+  width: auto;
+  display: block;
+  cursor: pointer;
+
+  transition: transform var(--t-base), filter var(--t-base);
+  filter: drop-shadow(var(--logo-glow));
+}
+#boketto-logo:hover img,
+#game-logo:hover img,
+#nexus-logo:hover img {
+  transform: scale(1.05) rotate(-2deg);
+}
+
+/* === ABSOLUTE CENTERING === */
+.header-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: max-content;
+}
+
+/* Main mystical note */
+.construction-note {
+  font-family: var(--font-heading);
+  text-align: center;
+  font-size: var(--font-sm);
+  font-style: italic;
+  color: var(--ink-soft);
+  opacity: 0;
+  letter-spacing: var(--letter-normal);
+  white-space: nowrap;
+  animation: fadeMystical 6s var(--t-slow) infinite;
+}
+.construction-sub {
+  font-family: var(--font-heading);
+  font-size: var(--font-xs);
+  color: var(--ink-faint);
+  opacity: 0.7;
+  letter-spacing: var(--letter-normal);
+  text-align: center;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ===============================
+   SHORTCUT PANELS
+   =============================== */
+.shortcut-panel {
+  position: absolute;
+  top: 100%;  /* directly under its logo block */
+  left: 50%;
+  transform: translateX(-50%) translateY(-0.3rem);
+  display: flex;
+  gap: var(--gap-sm);
+  opacity: 0;
+  transition: opacity var(--t-base), transform var(--t-base);
+  z-index: var(--z-tooltip);
+}
+.shortcut-panel.open {
+  opacity: 1;
+  transform: translateX(-50%) translateY(var(--pad-xs));
+}
+
+/* Optional alignment variants */
+.shortcut-panel.left  { left: 0;   transform: translateY(-0.3rem); }
+.shortcut-panel.right { left: auto; right: 0; transform: translateY(-0.3rem); }
+.shortcut-panel.left.open,
+.shortcut-panel.right.open { transform: translateY(var(--pad-xs)); }
+
+/* Shortcut icons */
+.shortcut-item img {
+  width: var(--shortcut-size);
+  height: auto;
+  filter: drop-shadow(0 0 4px var(--border));
+  transition: filter var(--t-fast), transform var(--t-fast);
+}
+.shortcut-item:hover img {
+  filter: drop-shadow(0 0 6px var(--accent));
+  transform: scale(1.1);
+}
+
+/* Back button — positioned relative to the left logo block */
+#boketto-back {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--pad-md) + (var(--header-height) * 1.2) + var(--gap-xs));
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  transition: opacity var(--t-base), transform var(--t-base);
+}
+#boketto-back.open {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.1);
+}
+#boketto-back img {
+  width: calc(var(--shortcut-size) * 1.2);
+  height: auto;
+}
+
+/* ===============================
+   ANIMATIONS
+   =============================== */
+@keyframes fadeMystical {
+  0%   { opacity: 0; color: var(--ink-soft); }
+  25%  { opacity: 1; color: var(--accent-mid); }
+  50%  { opacity: 1; color: var(--mystical); }
+  75%  { opacity: 1; color: var(--warning-soft); }
+  100% { opacity: 0; color: var(--ink-soft); }
+}
+
+/* ===============================
+   BUTTONS (Portal / Generic)
+   =============================== */
+button,
+.portal-btn{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-family: var(--font-heading);
+  font-size: var(--font-sm);
+  text-decoration: none;
+
+  background: none;
+  color: var(--ink);
+  border: 1px solid var(--accent-soft);
+  border-radius: var(--btn-1-radius);
+
+  box-shadow: var(--btn-1-glow);
+  animation: btn1Pulse var(--btn-1-pulse-duration) var(--btn-1-pulse-ease) infinite;
+
+  /* Nebula gradient text */
+  background: linear-gradient(90deg, var(--slate-1), var(--slate-3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+
+
+  transition: background var(--t-base),
+              border-color var(--t-base),
+              box-shadow var(--t-base),
+              transform var(--t-fast),
+              -webkit-text-fill-color var(--t-base);
+}
+button:hover,
+.portal-btn:hover {
+  background: var(--state-hover-bg);
+  border-color: var(--accent-mid);
+  box-shadow: var(--state-hover-shadow), var(--btn-1-glow-hover);
+  transform: scale(1.05);
+  -webkit-text-fill-color: var(--ink);
+}
+
+button:active,
+.portal-btn:active {
+  background: var(--state-active-bg);
+  border-color: var(--state-active-border);
+  box-shadow: var(--state-active-shadow);
+  transform: scale(0.96);
+}
+
+button:focus,
+.portal-btn:focus {
+  outline: none;
+  background: var(--state-focus-bg);
+  border-color: var(--state-focus-border);
+  box-shadow: var(--state-focus-shadow);
+}
+
+/* Pulse animation */
+@keyframes btn1Pulse {
+  0%, 100% { transform: scale(1); box-shadow: var(--btn-1-glow); }
+  50%      { transform: scale(1.02); box-shadow: var(--btn-1-glow-hover); }
+}
+/* ===============================
+   COOKIE BUTTONS – ACCEPT / REJECT
+   =============================== */
+
+/* Accept (green hollow) */
+.btn-accept {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-size: var(--font-sm);
+  background: none;
+  -webkit-background-clip: initial;
+  -webkit-text-fill-color: initial;
+  color: var(--btn-accept-text);
+  border: 1px solid var(--btn-accept-border);
+  border-radius: var(--btn-accept-radius);
+  padding: var(--pad-sm) var(--pad-md);
+
+  box-shadow: var(--btn-accept-glow);
+  animation: btnAcceptPulse 4s ease-in-out infinite;
+  transition: border-color var(--t-base),
+              box-shadow var(--t-base),
+              transform var(--t-fast);
+}
+.btn-accept:hover {
+  border-color: var(--btn-accept-border-hover);
+  box-shadow: var(--btn-accept-glow-hover);
+  transform: scale(1.05);
+}
+.btn-accept:active {
+  transform: scale(0.96);
+}
+
+/* Reject (red hollow) */
+.btn-reject {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-size: var(--font-sm);
+  background: none;
+  -webkit-background-clip: initial;
+  -webkit-text-fill-color: initial;
+  color: var(--btn-reject-text);
+  padding: var(--pad-sm) var(--pad-md);
+
+  box-shadow: var(--btn-reject-glow);
+  animation: btnRejectPulse 4s ease-in-out infinite;
+  transition: border-color var(--t-base),
+              box-shadow var(--t-base),
+              transform var(--t-fast);
+}
+.btn-reject:hover {
+  border-color: var(--btn-reject-border-hover);
+  box-shadow: var(--btn-reject-glow-hover);
+  transform: scale(1.05);
+}
+.btn-reject:active {
+  transform: scale(0.96);
+}
+/* Pulse animation */
+@keyframes btnAcceptPulse {
+  0%, 100% { box-shadow: var(--btn-accept-border-hover); }
+  50%      { box-shadow: var(--btn-accept-glow-hover); }
+}
+@keyframes btnRejectPulse {
+  0%, 100% { box-shadow: var(--btn-reject-border-hover); }
+  50%      { box-shadow: var(--btn-reject-glow-hover); }
+}
+/* ===============================
+   FOOTER
+   =============================== */
+#site-footer {
+  width: 100%;
+  margin-top: auto;
+  background: none;
+  backdrop-filter: blur(6px) saturate(120%);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  color: var(--ink-soft);
+  border-top: 1px solid var(--footer-border);
+  box-shadow: var(--footer-shadow);
+  padding: var(--pad-sm) 0 var(--pad-md) 0;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: var(--font-sm);
+  letter-spacing: var(--letter-wide);
+  box-sizing: border-box;
+  z-index: var(--z-base);
+}
+
+/* Main text (© Boketto Hub) — soft ink tone */
+#site-footer .copyright {
+  color: var(--ink-faint);
+}
+
+/* Footer links — distinct accent gradient */
+#site-footer a {
+  background: linear-gradient(90deg, var(--accent-light), var(--accent-mid));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-decoration: none;
+  font-weight: 500;
+  transition:
+    opacity var(--t-fast),
+    text-shadow var(--t-base),
+    -webkit-text-fill-color var(--t-base);
+}
+
+/* Hover: brighten to solid cyan-turquoise tone */
+#site-footer a:hover {
+  -webkit-text-fill-color: var(--accent-soft);
+  text-shadow: 0 0 6px var(--accent-glow);
+  opacity: 1;
+}
+
+
+/* ===============================
+   COOKIE SYSTEM
+   =============================== */
+#cookie-overlay {
+  position: fixed;
+  inset: 0;
+  background: none;
+  backdrop-filter: blur(var(--overlay-blur, var(--blur-sm)));
+  z-index: var(--z-modal);
+  opacity: 0;
+  transition: opacity var(--t-base);
+}
+#cookie-overlay.active {
+  opacity: 1;
+}
+.cookie-message.hidden,
+#cookie-overlay.hidden { display: none !important; }
+
+.cookie-widget {
+  position: fixed;
+  bottom: var(--cookie-offset);
+  left: var(--cookie-offset);
+  z-index: var(--z-tooltip);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gap-sm);
+  max-width: 95vw;
+}
+
+#cookie-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  width: var(--cookie-toggle-size);
+  height: var(--cookie-toggle-size);
+  padding: 0;
+  transition: transform var(--t-fast);
+}
+#cookie-toggle img {
+  width: 100%;
+  height: auto;
+}
+#cookie-toggle:hover {
+  transform: scale(1.08);
+}
+
+/* ===============================
+   COOKIE MESSAGE BUBBLE
+   =============================== */
+.cookie-message {
+  position: absolute;
+  left: calc(100% + var(--gap-sm));
+  bottom: 0;
+  background: var(--panel-bg);
+  border: 0.08rem solid var(--panel-border);
+  border-radius: var(--radius-md);
+  padding: var(--pad-md);
+  width: var(--cookie-bubble-width);
+  font-family: var(--font-body);
+  font-size: var(--font-sm);
+  line-height: var(--line-base);
+  color: var(--ink-soft);
+  box-shadow: var(--panel-shadow);
+  opacity: 0;
+  transition: opacity var(--t-base), transform var(--t-base);
+}
+
+.cookie-message.active {
+  opacity: 1;
+  transform: translateX(0.15rem);
+}
+
+/* Links: Privacy / Cookies — same accent tone as footer */
+.cookie-message a {
+  background: linear-gradient(90deg, var(--accent-light), var(--accent-mid));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  font-weight: 600;
+  text-decoration: underline;
+  transition:
+    opacity var(--t-fast),
+    -webkit-text-fill-color var(--t-base),
+    text-shadow var(--t-base);
+}
+
+.cookie-message a:hover {
+  -webkit-text-fill-color: var(--accent-soft);
+  text-shadow: 0 0 6px var(--accent-glow);
+  opacity: 1;
+}
+
+
+/* Tooltip */
+@media (min-width: 600px) {
+  #cookie-toggle {
+    position: relative;
+  }
+  #cookie-toggle::after {
+    content: attr(data-status);
+    position: absolute;
+    top: 50%;
+    left: 110%;
+    transform: translateY(-50%);
+    background: none !important;
+    border: 0.08rem solid var(--tooltip-border);
+    border-radius: var(--tooltip-radius);
+    padding: var(--tooltip-pad);
+    font-size: var(--tooltip-font);
+    font-family: var(--font-heading);
+    background: linear-gradient(90deg, var(--slate-1), var(--slate-3));
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: var(--ink) !important;
+    background-clip: text;
+    color: transparent !important;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity var(--t-base), transform var(--t-base);
+    z-index: var(--z-tooltip);
+	text-shadow: none !important;
+  }
+  #cookie-toggle:hover::after {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0.2rem);
+  }
+}
+/* ===============================
+   UTILITY CLASSES
+   =============================== */
+
+/* Apply nebula gradient text anywhere */
+.nebula-text {
+  background: linear-gradient(90deg, var(--slate-1), var(--slate-3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 8px var(--accent-soft);
+}
+
+/* Softer variant without glow */
+.nebula-text-soft {
+  background: linear-gradient(90deg, var(--slate-1), var(--slate-3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+}
+
+/* Moonlight ink fallback (dimmed solid text) */
+.moon-text {
+  color: var(--ink);
+}
+/* ===============================
+   BACKGROUND UTILITIES
+   =============================== */
+.nebula-bg {
+  background: var(--bg-nebula-core);
+  color: var(--ink);
+}
+
+.nebula-bg-soft {
+  background: var(--bg-nebula-soft);
+  backdrop-filter: blur(var(--blur-sm));
+  -webkit-backdrop-filter: blur(var(--blur-sm));
+  color: var(--ink);
+  border: 1px solid var(--accent-border);
+  box-shadow: var(--panel-shadow);
+  border-radius: var(--radius-md);
+}
+
+.nebula-bg-glow {
+  background: var(--bg-nebula-glow);
+  border: 1px solid var(--accent-soft);
+  box-shadow: 0 0 18px 2px var(--accent-soft);
+  border-radius: var(--radius-lg);
+  color: var(--ink);
+}
+/* ===============================
+   TEXT INTERACTION DEFAULTS
+   - Plain text is passive by default
+   - Interactive elements & opt-in classes re-enable selection/clicks
+   =============================== */
+
+/* Passive text (no selection, no pointer events) */
+p:not(.interactive):not(.selectable),
+li:not(.interactive):not(.selectable),
+span:not(.interactive):not(.selectable),
+h1:not(.interactive):not(.selectable),
+h2:not(.interactive):not(.selectable),
+h3:not(.interactive):not(.selectable),
+h4:not(.interactive):not(.selectable),
+h5:not(.interactive):not(.selectable),
+h6:not(.interactive):not(.selectable) {
+  -webkit-user-select: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Keep interactive things usable */
+a, button, input, select, textarea, summary,
+[role="button"], [contenteditable="true"] {
+  -webkit-user-select: auto;
+  user-select: text;
+  pointer-events: auto;
+}
+
+/* Utilities to override per element/block */
+.selectable {            /* allow selecting text */
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+.interactive {           /* allow clicks/hover etc. */
+  pointer-events: auto !important;
+}
+.no-pointer {            /* force-disable pointer events if needed */
+  pointer-events: none !important;
+}
+.no-select {             /* force-disable selection if needed */
+  -webkit-user-select: none !important;
+  user-select: none !important;
+}
